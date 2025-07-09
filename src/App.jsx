@@ -11,6 +11,9 @@ import Menu from './pages/Menu';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
+import Login from './pages/Login';
+import CustomerDashboard from './pages/CustomerDashboard';
+import OrderSuccess from './pages/OrderSuccess';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminMenus from './pages/admin/AdminMenus';
@@ -63,6 +66,15 @@ function App() {
                   <Route path="/admin/orders" element={<AdminOrders />} />
                   <Route path="/admin/settings" element={<AdminSettings />} />
                   
+                  {/* Customer Login */}
+                  <Route path="/login" element={<Login />} />
+                  
+                  {/* Customer Dashboard */}
+                  <Route path="/dashboard" element={<CustomerDashboard />} />
+                  
+                  {/* Order Success Page - No Header/Footer */}
+                  <Route path="/order-success" element={<OrderSuccess />} />
+                  
                   {/* Public Routes */}
                   <Route path="/*" element={
                     <div className="app-layout">
@@ -82,7 +94,7 @@ function App() {
                   } />
                 </Routes>
               </AnimatePresence>
-              
+
               {/* PWA Components */}
               <PWAInstallPrompt 
                 show={showInstallPrompt} 

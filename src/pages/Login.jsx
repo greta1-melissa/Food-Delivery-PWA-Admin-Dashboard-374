@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as FiIcons from 'react-icons/fi';
-import SafeIcon from '../../common/SafeIcon';
-import { useAdmin } from '../../context/AdminContext';
-import Logo from '../../assets/logo';
+import SafeIcon from '../common/SafeIcon';
+import { useAuth } from '../context/AuthContext';
+import Logo from '../assets/logo';
 
-const { FiUser, FiLock, FiEye, FiEyeOff } = FiIcons;
+const { FiMail, FiLock, FiEye, FiEyeOff } = FiIcons;
 
-const AdminLogin = () => {
+const Login = () => {
   const navigate = useNavigate();
-  const { adminLogin } = useAdmin();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -20,10 +20,7 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
   };
 
@@ -32,10 +29,10 @@ const AdminLogin = () => {
     setLoading(true);
     setError('');
 
-    const result = await adminLogin(formData.username, formData.password);
+    const result = await login(formData.email, formData.password);
     
     if (result.success) {
-      navigate('/admin/dashboard');
+      navigate('/dashboard');
     } else {
       setError(result.error);
     }
@@ -53,8 +50,8 @@ const AdminLogin = () => {
       >
         <div className="text-center mb-8">
           <Logo size="large" className="mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h1>
-          <p className="text-gray-600">The Hungry Drop - Admin Console</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+          <p className="text-gray-600">Sign in to your account</p>
         </div>
 
         {error && (
@@ -66,18 +63,18 @@ const AdminLogin = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Username
+              Email Address
             </label>
             <div className="relative">
-              <SafeIcon icon={FiUser} className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <SafeIcon icon={FiMail} className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
               <input
-                type="text"
-                name="username"
-                value={formData.username}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter admin username"
+                placeholder="Enter your email"
               />
             </div>
           </div>
@@ -95,7 +92,7 @@ const AdminLogin = () => {
                 onChange={handleChange}
                 required
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter admin password"
+                placeholder="Enter your password"
               />
               <button
                 type="button"
@@ -124,21 +121,16 @@ const AdminLogin = () => {
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-600">
-            <strong>Demo Credentials:</strong>
+          <p className="text-gray-600">
+            Don't have an account?{' '}
+            <Link to="/menu" className="text-orange-500 hover:text-orange-600 font-medium">
+              Order now and create one during checkout
+            </Link>
           </p>
-          <div className="mt-2 space-y-1 text-sm">
-            <p className="font-mono bg-gray-100 px-2 py-1 rounded">
-              Username: <span className="font-semibold">thehungrydrop</span>
-            </p>
-            <p className="font-mono bg-gray-100 px-2 py-1 rounded">
-              Password: <span className="font-semibold">admin123</span>
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
   );
 };
 
-export default AdminLogin;
+export default Login;
